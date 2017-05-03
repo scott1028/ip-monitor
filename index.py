@@ -42,7 +42,7 @@ class IPList(webapp2.RequestHandler):
 class Client(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(self.request.headers))
+        self.response.write(json.dumps(self.request.environ))
 
 application = webapp2.WSGIApplication([
     ('/', Home),
