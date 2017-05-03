@@ -8,7 +8,6 @@ import webapp2
 
 IP_LIST = {}
 
-
 def base_handler(self):
     IP_LIST[self.request.GET.get('location', 'non-Known')] = {
         'ip': self.request.remote_addr,
@@ -16,10 +15,8 @@ def base_handler(self):
     }
     self.response.headers['Content-Type'] = 'application/json'
 
-
 def base_post_handler(self):
     IP_LIST[self.request.GET.get('location', 'non-Known')]['body'] = self.request.body
-
 
 class Home(webapp2.RequestHandler):
     def get(self):
@@ -37,22 +34,24 @@ class Home(webapp2.RequestHandler):
             self.request.GET.get('location', 'non-Known'): self.request.remote_addr
         }))
 
-
-
 class IPList(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(IP_LIST))
 
+class Client(webapp2.RequestHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(self.request.headers))
 
 application = webapp2.WSGIApplication([
     ('/', Home),
     ('/ip_list', IPList),
+    ('/client', Client),
     # ('/taisys', Taisys),
     # ('/hsinchu', Hsinchu),
     # ('/taipei', Taipei),
 ], debug=True)
-
 
 def main():
     from paste import httpserver
